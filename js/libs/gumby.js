@@ -51,7 +51,7 @@
 						complete: function ($e) {
 							var $input = $e.children('input'),
 								// radio buttons with matching names in the same group
-								$otherInputs = $('input[name=' + $input.attr('name') + ']');
+								$otherInputs = $('input[name="' + $input.attr('name') + '"]');
 
 							// ensure other radio buttons are not checked
 							$otherInputs.attr('checked', false).parent().removeClass('checked');
