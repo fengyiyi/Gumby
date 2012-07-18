@@ -32,6 +32,7 @@
 						selector: '.checkbox',
 						onEvent: 'click',
 						className: 'checked',
+						target: false,
 						condition: false,
 						// check/uncheck hidden checkbox input
 						complete: function ($e) {
@@ -46,6 +47,7 @@
 						selector: '.radio',
 						onEvent: 'click',
 						className: 'checked',
+						target: false,
 						condition: false,
 						// check hidden radio input and uncheck others
 						complete: function ($e) {
@@ -67,15 +69,18 @@
 						selector: 'form[data-form="validate"] .field',
 						onEvent: 'blur',
 						className: 'error',
+						target: false,
 						// check input is required and if so add/remove error class based on present value
 						condition: function ($e) { 
-							var $child = $e.find('input');
+							var $child = $e.find('input, textarea').first(),
+								val = $child.val();
 
 							if(!$child.attr('required')) {
 								return false;
 							}
 
-							if (!$child.val().length) {
+							// email/regular validation
+							if (($child.attr('type') === 'email' && !val.match(/^[\w.%&=+$#!-']+@[\w.-]+\.[a-zA-Z]{2,4}$/)) || !val.length) {
 								$e.addClass('error');
 								return false;
 							}
@@ -83,13 +88,38 @@
 							$e.removeClass('error');
 						},
 						complete: false
+					},
+
+					// toggles - toggle active class on itself and selector in data-for
+					// on click
+					{
+						selector: '.toggle:not([data-on]), .toggle[data-on="click"]',
+						onEvent: 'click',
+						className: 'active',
+						target: function($e) {
+							return $e.add($($e.attr('data-for')));
+						},
+						condition: false,
+						complete: false
+					},
+
+					// on mouseover (will always add class) and mouseout (will always remove class)
+					{
+						selector: '.toggle[data-on="hover"]',
+						onEvent: 'mouseover mouseout',
+						className: 'active',
+						target: function($e) {
+							return $e.add($($e.attr('data-for')));
+						},
+						condition: false,
+						complete: false
 					}
 				],
 
 				// initialize simple UI
 				init: function () {
 
-					var x, ui, $e, callBack, conditionalCallBack, activeClass;
+					var x, ui, $e, callBack, conditionalCallBack, activeClass, targetName;
 
 					// loop round gumby UI elements applying active/inactive class logic
 					for (x in simpleUI.ui) {
@@ -100,6 +130,7 @@
 						callBack = ui.complete && typeof ui.complete === 'function' ? ui.complete : false;
 						// conditional callback
 						conditionalCallBack = ui.condition && typeof ui.condition === 'function' ? ui.condition : false;
+						targetName = ui.target && typeof ui.target === 'function' ? ui.target : false;
 						activeClass = ui.className || false;
 
 						// store UI data
@@ -107,7 +138,8 @@
 						setGumbyData(ui.selector.replace(' ', '-'), {
 							'GumbyCallback' : callBack,
 							'GumbyConditionalCallBack' : conditionalCallBack,
-							'GumbyActiveClass' : activeClass
+							'GumbyActiveClass' : activeClass,
+							'GumbyTarget' : targetName
 						});
 
 						// bind it all!
@@ -115,6 +147,7 @@
 							e.preventDefault();
 
 							var $this = $(this),
+								$target = $(this),
 								gumbyData = getGumbyData(e.handleObj.selector.replace(' ', '-')),
 								condition = true;
 
@@ -126,7 +159,11 @@
 
 							// no conditional or it passed so toggle class
 							if (gumbyData.GumbyActiveClass) {
-								$this.toggleClass(gumbyData.GumbyActiveClass);
+								// check for sepcified target
+								if(gumbyData.GumbyTarget) {
+									$target = gumbyData.GumbyTarget($this);
+								}
+								$target.toggleClass(gumbyData.GumbyActiveClass);
 							}
 
 							// if complete call back present call it here
@@ -264,13 +301,13 @@
 							$tabs = $tab.parents('.tabs'),
 							// currently active tab
 							activeTab = {
-								'tab' : $tabs.children('ul').children('li.active'),
-								'content' : $tabs.children('div.active')
+								'tab' : $tabs.find('ul').children('li.active'),
+								'content' : $tabs.find('div[data-tab].active')
 							},
 							// newly clicked tab
 							newTab = {
 								'tab' : $tab.parent('li'),
-								'content' : $tabs.children('[data-tab=' + $tab.attr('href').replace('#', '') + ']')
+								'content' : $tabs.find('[data-tab=' + $tab.attr('href').replace('#', '') + ']')
 							},
 							x, y;
 
