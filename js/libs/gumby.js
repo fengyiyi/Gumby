@@ -201,7 +201,7 @@
 							openTimer = null;
 
 						// custom .picker style are removed on handheld devices using :after to insert hidden content and inform JS 
-						if (window.getComputedStyle($this.get(0), ':after').getPropertyValue('content') === 'handheld') {
+						if (window.getComputedStyle && window.getComputedStyle($this.get(0), ':after').getPropertyValue('content') === 'handheld') {
 							return false;
 						}
 
