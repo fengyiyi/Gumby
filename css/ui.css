@@ -718,6 +718,7 @@
 		border-left: 5px solid transparent;
 		border-top: 5px solid #b72a18;
 		opacity: 1;
+		filter: alpha(opacity=100);
 	}
 	
 	
