@@ -679,9 +679,20 @@
 		background: #ffdace;
 	}
 	
+	/* style placeholder text for Webkit browsers */
+	.field.error input::-webkit-input-placeholder{
+		color: #cd4225;
+	}
+	
+	/* style placeholder text for Firefox */
+	.field.error input:-moz-placeholder{
+		color: #cd4225;
+	}
+	
 	form .msg {
 		display: block;
 		opacity: 0;
+		filter: alpha(opacity=0);
 		height: 0;
 		width: 100%;
 		overflow: hidden;
@@ -689,6 +700,7 @@
 	
 	form .error > .msg {
 		opacity: 1;
+		filter: alpha(opacity=100)
 		height: auto;
 		overflow: visible;
 		
@@ -721,6 +733,10 @@
 		filter: alpha(opacity=100);
 	}
 	
+	form .msg .caret {
+		opacity:0;
+		filter: alpha(opacity=0);
+	}
 	
 	/* Form Picker Element (<select>) */
 		
