@@ -122,7 +122,7 @@
 					var x, ui, $e, callBack, conditionalCallBack, activeClass, targetName;
 
 					// loop round gumby UI elements applying active/inactive class logic
-					for (x in simpleUI.ui) {
+					for(var x = 0, y = simpleUI.ui.length; x < y; x++) {
 
 						ui = simpleUI.ui[x];
 						$e = $(ui.selector);
