@@ -37,7 +37,7 @@
 						// check/uncheck hidden checkbox input
 						complete: function ($e) {
 							var checked = $e.hasClass('checked');
-							$e.children('input').attr('checked', checked);
+							$e.children('input').attr('checked', checked).change();
 						}
 					},
 
@@ -55,11 +55,17 @@
 								// radio buttons with matching names in the same group
 								$otherInputs = $('input[name="' + $input.attr('name') + '"]');
 
-							// ensure other radio buttons are not checked
-							$otherInputs.attr('checked', false).parent().removeClass('checked');
+							// uncheck other radio buttons that are currently checked
+							// loop round so we can trigger change on required elements
+							$otherInputs.each(function() {
+								var $this = $(this);
 
-							// check this one
-							$input.attr('checked', true).parent().addClass('checked');
+								// uncheck select radio buttons in group
+								$this.attr('checked', false).parent().removeClass('checked');
+							});
+
+							// check this one and trigger change on it
+							$input.attr('checked', true).change().parent().addClass('checked')
 						}
 					},	
 
