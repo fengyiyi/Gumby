@@ -235,8 +235,9 @@
 						// update label
 						$parent.children('.toggle').html(val + '<span class="caret"></span>');
 
-						// update hidden select
-						$parent.find('option').attr('selected', false).eq($this.index()  +  1).attr('selected', true);
+						// update hidden select and trigger change event
+						$parent.find('option').attr('selected', false).eq($this.index()  +  1)
+							   .attr('selected', true).parent('select').change();
 					});
 				},
 
