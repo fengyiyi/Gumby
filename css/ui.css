@@ -700,7 +700,7 @@
 	
 	form .error > .msg {
 		opacity: 1;
-		filter: alpha(opacity=100)
+		filter: alpha(opacity=100);
 		height: auto;
 		overflow: visible;
 		
