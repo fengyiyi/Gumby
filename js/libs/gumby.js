@@ -79,9 +79,10 @@
 						// check input is required and if so add/remove error class based on present value
 						condition: function ($e) { 
 							var $child = $e.find('input, textarea').first(),
-								val = $child.val();
+								val = $child.val(),
+								req = $child.attr('data-form');
 
-							if(!$child.attr('data-required')) {
+							if(!req || req !== 'required') {
 								return false;
 							}
 
