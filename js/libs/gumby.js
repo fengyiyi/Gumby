@@ -81,7 +81,7 @@
 							var $child = $e.find('input, textarea').first(),
 								val = $child.val();
 
-							if(!$child.attr('required')) {
+							if(!$child.attr('data-required')) {
 								return false;
 							}
 
