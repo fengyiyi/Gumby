@@ -331,7 +331,7 @@
 					}
 
 					// hook up tab links
-					$(document).on('click', '.tabs ul li a', function(e) {
+					$(document).on('click', '.tabs > ul > li > a', function(e) {
 						activateTab($(this));
 					});
 
