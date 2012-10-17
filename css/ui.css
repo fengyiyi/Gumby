@@ -422,7 +422,7 @@
   	text-shadow: 0 1px 1px #fff;
   }
   
-  .tabs div {
+  .tabs > div {
   	display: none;
   	padding: 20px 10px;
   }
